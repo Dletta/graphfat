@@ -89,19 +89,25 @@ var setupWatcher = function(fileObj) {
   var timer = setInterval(() => {
     var end = fs.statSync(fileObj.path).size
     var length = end - fileObj.pos
-    var data = Buffer.alloc(length)
+    var data = ''
+    
 
-    /*console.log(`Read ${path} change of ${length} detected.`);*/
+    console.log(`Read ${path} change of ${length} detected.`);
     if(length > 2) {
+	console.log("Init Data")
+        data = Buffer.alloc(length)
+	
         fileObj['fd'] = fs.openSync(fileObj.path, 'r')
-        fs.read(fileObj.fd,data, 0, length, fileObj.pos, (err, bytesRead, data, fileObj.fd) => {
-          data = data.toString()
+        fs.read(fileObj.fd,data, 0, length, fileObj.pos, (err, bytesRead, data) => {
+          var temp = data.toString()
+	  console.log(data.toString())
           fileObj['pos'] = fs.statSync(fileObj.path).size
-          var array = data.split(os.EOL)
+          var array = temp.split(os.EOL)
           for(var i = 0; i < array.length; i++){
             var time = new Date().getTime()
             var test = array[i].split(',')
-            if(gData1[11] != test[11]){
+            if(array[i] != ''){
+              console.log("sending Data")
               win.webContents.send('newData', fileObj.mess, array[i], time)
               gData1 = array[i]
             }
@@ -109,6 +115,6 @@ var setupWatcher = function(fileObj) {
           fs.closeSync(fileObj.fd)
         })
     }
-  }, 500)
+  }, 1200)
   timerList.push(timer)
 }
