@@ -83,7 +83,7 @@ ipcMain.on('ready', (ev, filepath, file2path) => {
 
 var setupWatcher = function(fileObj) {
   fileObj['pos'] = fs.statSync(fileObj.path).size
-  fileObj['fd'] = fs.openSync(fileObj.path, 'r')
+
   console.log('Watching: ' + fileObj);
 
   var timer = setInterval(() => {
@@ -93,7 +93,8 @@ var setupWatcher = function(fileObj) {
 
     /*console.log(`Read ${path} change of ${length} detected.`);*/
     if(length > 2) {
-        fs.read(fileObj.fd,data, 0, length, fileObj.pos, (err, bytesRead, data) => {
+        fileObj['fd'] = fs.openSync(fileObj.path, 'r')
+        fs.read(fileObj.fd,data, 0, length, fileObj.pos, (err, bytesRead, data, fileObj.fd) => {
           data = data.toString()
           fileObj['pos'] = fs.statSync(fileObj.path).size
           var array = data.split(os.EOL)
@@ -105,6 +106,7 @@ var setupWatcher = function(fileObj) {
               gData1 = array[i]
             }
           }
+          fs.closeSync(fileObj.fd)
         })
     }
   }, 500)
