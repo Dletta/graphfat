@@ -1,0 +1,14 @@
+{
+  "name": "graphfat",
+  "version": "1.0.0",
+  "description": "Graph FAT data from csv output file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jachen Duschletta",
+  "license": "MIT",
+  "dependencies": {
+    "smoothie": "^1.27.0"
+  }
+}
