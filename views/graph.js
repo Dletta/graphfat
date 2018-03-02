@@ -147,8 +147,10 @@ var start = function () {
 
 /* Receiving new Data from Main */
 ipcRenderer.on('newData', (event, message, data, time) => {
+  console.log(`${message} received`);
   if(message == 'file1'){
-    var array = data.split(',')
+    var array = data.split('\t')
+    console.log(`Results: ${array}`);
     if(array.length > 5){
       for(var i=0; i < array.length; i++){
         if(array[i] == ''){

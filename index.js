@@ -90,22 +90,22 @@ var setupWatcher = function(fileObj) {
     var end = fs.statSync(fileObj.path).size
     var length = end - fileObj.pos
     var data = ''
-    
 
-    console.log(`Read ${path} change of ${length} detected.`);
+
+    console.log(`Read ${fileObj.path} change of ${length} detected.`);
     if(length > 2) {
 	console.log("Init Data")
         data = Buffer.alloc(length)
-	
+
         fileObj['fd'] = fs.openSync(fileObj.path, 'r')
         fs.read(fileObj.fd,data, 0, length, fileObj.pos, (err, bytesRead, data) => {
           var temp = data.toString()
-	  console.log(data.toString())
           fileObj['pos'] = fs.statSync(fileObj.path).size
           var array = temp.split(os.EOL)
           for(var i = 0; i < array.length; i++){
+            console.log(`Array Item : ${array[i]} which splits as  ${array[i].split('\t')}`);
             var time = new Date().getTime()
-            var test = array[i].split(',')
+            var test = array[i].split('\t')
             if(array[i] != ''){
               console.log("sending Data")
               win.webContents.send('newData', fileObj.mess, array[i], time)
