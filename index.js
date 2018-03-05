@@ -115,6 +115,6 @@ var setupWatcher = function(fileObj) {
           fs.closeSync(fileObj.fd)
         })
     }
-  }, 1200)
+  }, 1050)
   timerList.push(timer)
 }
